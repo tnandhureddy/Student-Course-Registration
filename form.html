@@ -1,0 +1,135 @@
+<!DOCYTPE html>
+    <html>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Box model</title>
+
+        <link rel="stylesheet" href="./form.css">
+    </head>
+
+    <body>
+        <div class="card">
+
+            <h1>Student Course Registration</h1>
+
+            <p class="subtitle">
+                Fill in your details below to register for your preferred course.
+            </p>
+
+            <form>
+
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" id="name">
+                </div>
+
+                <div class="input-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="phone">
+                </div>
+
+                <div class="input-group">
+                    <label>Gmail Address</label>
+                    <input type="email" id="gmail">
+                </div>
+
+                <div class="input-group">
+                    <label>Course Selection</label>
+                    <select id="course">
+                        <option>Choose</option>
+                        <option>Data Analytics</option>
+                        <option>Machine Learning</option>
+                        <option>Artificial Intelligence</option>
+                        <option>Python Programming</option>
+                        <option>Web Development</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>City</label>
+                    <input type="text" id="city">
+                </div>
+
+                <div class="input-group">
+                    <label>Comments</label>
+                    <textarea id="comments"></textarea>
+                </div>
+
+                <button>Register Now</button>
+
+            </form>
+
+        </div>
+        <script>
+
+const WEB_APP_URL =
+"https://script.google.com/macros/s/AKfycbwzSAD82CGB4TiFu5W5ARe9TAapphK06I9kU2by32BB7m6-GJZ9vo-9iifOt2xbwgOF/exec";
+
+document.querySelector("form")
+.addEventListener("submit", async function(e){
+
+    e.preventDefault();
+
+    const data = {
+
+        name:
+        document.getElementById("name").value,
+
+        phone:
+        document.getElementById("phone").value,
+
+        gmail:
+        document.getElementById("gmail").value,
+
+        course:
+        document.getElementById("course").value,
+
+        city:
+        document.getElementById("city").value,
+
+        comments:
+        document.getElementById("comments").value
+
+    };
+
+    try{
+
+        const response =
+        await fetch(WEB_APP_URL,{
+
+            method:"POST",
+
+            body:JSON.stringify(data)
+
+        });
+
+        const result =
+        await response.json();
+
+        if(result.status==="success"){
+
+            alert(
+              "Registration Submitted Successfully!"
+            );
+
+            document.querySelector("form").reset();
+
+        }
+
+    }catch(error){
+
+        alert(
+          "Error submitting form"
+        );
+
+    }
+
+});
+
+</script>
+
+    </body>
+
+    </html>

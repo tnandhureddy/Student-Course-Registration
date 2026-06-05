@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Box model</title>
 
-        <link rel="stylesheet" href="./style.css">
+        <link rel="stylesheet" href="./form.css">
     </head>
 
     <body>
@@ -36,15 +36,47 @@
                 </div>
 
                 <div class="input-group">
-                    <label>Course Selection</label>
-                    <select id="course">
-                        <option>Choose</option>
-                        <option>Data Analytics</option>
-                        <option>Machine Learning</option>
-                        <option>Artificial Intelligence</option>
-                        <option>Python Programming</option>
-                        <option>Web Development</option>
+                    <label>B.Tech Stream</label>
+                    <select id="branch">
+                        <option value="">Choose Branch</option>
+                        <option>CSE</option>
+                        <option>IT</option>
+                        <option>ECE</option>
+                        <option>MECH</option>
                     </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Select Any 5 Courses</label>
+
+                    <div class="course-list">
+                        <label><input type="checkbox" name="course" value="Python Programming"> Python
+                            Programming</label>
+                        <label><input type="checkbox" name="course" value="Java Programming"> Java Programming</label>
+                        <label><input type="checkbox" name="course" value="C Programming"> C Programming</label>
+                        <label><input type="checkbox" name="course" value="C++ Programming"> C++ Programming</label>
+                        <label><input type="checkbox" name="course" value="Web Development"> Web Development</label>
+                        <label><input type="checkbox" name="course" value="Frontend Development"> Frontend
+                            Development</label>
+                        <label><input type="checkbox" name="course" value="Backend Development"> Backend
+                            Development</label>
+                        <label><input type="checkbox" name="course" value="Full Stack Development"> Full Stack
+                            Development</label>
+                        <label><input type="checkbox" name="course" value="Data Analytics"> Data Analytics</label>
+                        <label><input type="checkbox" name="course" value="Data Science"> Data Science</label>
+                        <label><input type="checkbox" name="course" value="Machine Learning"> Machine Learning</label>
+                        <label><input type="checkbox" name="course" value="Artificial Intelligence"> Artificial
+                            Intelligence</label>
+                        <label><input type="checkbox" name="course" value="Cloud Computing"> Cloud Computing</label>
+                        <label><input type="checkbox" name="course" value="Cyber Security"> Cyber Security</label>
+                        <label><input type="checkbox" name="course" value="AWS"> AWS</label>
+                        <label><input type="checkbox" name="course" value="DevOps"> DevOps</label>
+                        <label><input type="checkbox" name="course" value="UI/UX Design"> UI/UX Design</label>
+                        <label><input type="checkbox" name="course" value="Digital Marketing"> Digital Marketing</label>
+                        <label><input type="checkbox" name="course" value="Blockchain"> Blockchain</label>
+                        <label><input type="checkbox" name="course" value="Mobile App Development"> Mobile App
+                            Development</label>
+                    </div>
                 </div>
 
                 <div class="input-group">
@@ -64,72 +96,121 @@
         </div>
         <script>
 
-const WEB_APP_URL =
-"https://script.google.com/macros/s/AKfycbwzSAD82CGB4TiFu5W5ARe9TAapphK06I9kU2by32BB7m6-GJZ9vo-9iifOt2xbwgOF/exec";
+            const WEB_APP_URL =
+                "https://script.google.com/macros/s/AKfycbyfW7opW95xxTuLTfveX7a0OcKz_bjXHpId-8RfvnwXYShbdVTALU9K7FFWFQhMTvNO/exec";
 
-document.querySelector("form")
-.addEventListener("submit", async function(e){
 
-    e.preventDefault();
+            const courseCheckboxes =
+                document.querySelectorAll('input[name="course"]');
 
-    const data = {
+            courseCheckboxes.forEach((checkbox) => {
 
-        name:
-        document.getElementById("name").value,
+                checkbox.addEventListener("change", function () {
 
-        phone:
-        document.getElementById("phone").value,
+                    const selectedCourses =
+                        document.querySelectorAll(
+                            'input[name="course"]:checked'
+                        );
 
-        gmail:
-        document.getElementById("gmail").value,
+                    if (selectedCourses.length > 5) {
 
-        course:
-        document.getElementById("course").value,
+                        this.checked = false;
 
-        city:
-        document.getElementById("city").value,
+                        alert(
+                            "You can select only 5 courses."
+                        );
 
-        comments:
-        document.getElementById("comments").value
+                    }
 
-    };
+                });
 
-    try{
+            });
 
-        const response =
-        await fetch(WEB_APP_URL,{
 
-            method:"POST",
+            document.querySelector("form")
+                .addEventListener("submit", async function (e) {
 
-            body:JSON.stringify(data)
+                    e.preventDefault();
 
-        });
+                    const selectedCourses =
+                        Array.from(
+                            document.querySelectorAll(
+                                'input[name="course"]:checked'
+                            )
+                        ).map(course => course.value);
 
-        const result =
-        await response.json();
+                    if (selectedCourses.length !== 5) {
 
-        if(result.status==="success"){
+                        alert(
+                            "Please select exactly 5 courses."
+                        );
 
-            alert(
-              "Registration Submitted Successfully!"
-            );
+                        return;
 
-            document.querySelector("form").reset();
+                    }
 
-        }
+                    const data = {
 
-    }catch(error){
+                        name:
+                            document.getElementById("name").value,
 
-        alert(
-          "Error submitting form"
-        );
+                        phone:
+                            document.getElementById("phone").value,
 
-    }
+                        gmail:
+                            document.getElementById("gmail").value,
 
-});
+                        branch:
+                            document.getElementById("branch").value,
 
-</script>
+                        courses:
+                            selectedCourses.join(", "),
 
+                        city:
+                            document.getElementById("city").value,
+
+                        comments:
+                            document.getElementById("comments").value
+
+                    };
+
+                    try {
+
+                        console.log(data);
+
+                        const response =
+                            await fetch(WEB_APP_URL, {
+
+                                method: "POST",
+
+                                body: JSON.stringify(data)
+
+                            });
+
+                        const result =
+                            await response.json();
+
+                        if (result.status === "success") {
+
+                            alert(
+                                "Registration Submitted Successfully!"
+                            );
+
+                            document.querySelector("form").reset();
+
+                        }
+
+                    } catch (error) {
+
+                        alert(
+                            "Error submitting form"
+                        );
+
+                    }
+
+                });
+
+        </script>
     </body>
 
     </html>
